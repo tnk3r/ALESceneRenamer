@@ -9,4 +9,6 @@ $ ALESceneRenamer.py Timeline1.ale /home/tinker/Clips
 
 Currently the files are renamed to $Scene_$Take_$CameraID.mov
 
-Colorfront has this feature built in to it's transcoding engine, and metadata is pulled from the SQL Database.
+Colorfront has this feature built in to it's transcoding engine, and any desired metadata is pulled from the SQL Database.
+
+to make executable: chmod +x ALESceneRenamer.py
