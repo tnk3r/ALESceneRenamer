@@ -2,11 +2,13 @@
 import os
 import sys
 
+
 class aleParser():
+
     def __init__(self):
         self.parseArgs()
         if len(self.clipList) == 0:
-            print "No Clips found in Directory"
+            print "Error: No Clips found in Directory"
             sys.exit(0)
         self.parseALE(self.arg1)
 
@@ -17,20 +19,23 @@ class aleParser():
                 for line in self.aleFile.split("\r"):
                     raw = line.strip("\n").split("\t")
                     if raw[0] == "Name":
-                        self.ALEscenePosition = raw.index("Scene")
-                        self.ALETakePosition = raw.index("Take")
+                        self.scenePosition = raw.index("Scene")
+                        self.takePosition = raw.index("Take")
                     for clip in self.clipList:
                         if raw[0].split(".")[0] == clip.split(".")[0]:
                             cam = str(raw[0][0])
-                            scene = str(raw[self.ALEscenePosition]).replace("_", "").replace("-", "")
-                            take = str(raw[self.ALETakePosition])
-                            original = str(self.sourceDirectory)+"/"+str(clip)
-                            new = str(scene)+"_"+str(take)+"_"+str(cam)+"CAM."+clip.split(".")[1]
-                            print "Renaming "+str(clip)+" to "+str(new)
-                            os.system("mv "+str(original)+" "+str(self.sourceDirectory)+"/"+str(new))
+                            try:
+                                scene = str(raw[self.scenePosition]).replace("_", "").replace("-", "")
+                                take = str(raw[self.takePosition])
+                                original = str(self.sourceDirectory)+"/"+str(clip)
+                                new = str(scene)+"_"+str(take)+"_"+str(cam)+"CAM."+clip.split(".")[1]
+                                os.system("mv "+str(original)+" "+str(self.sourceDirectory)+"/"+str(new))
+                                print "Renamed: "+str(clip)+" to "+str(new)
+                            except StandardError as msg:
+                                print "Couldn't Rename "+str(clip)+", Maybe no Scene+Take info was found: "+str(msg)
             print "Completed Renaming Files!"
         except StandardError as msg:
-            print str(msg)
+            print "Error Parsing ALE File: "+str(msg)
 
     def parseArgs(self):
         try:
