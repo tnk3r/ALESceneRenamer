@@ -3,6 +3,10 @@ import os
 import sys
 
 
+# Written by tinker -Alex Carr-
+# you can reuse/modify this code, please credit the original author.
+
+
 class aleParser():
 
     def __init__(self):
